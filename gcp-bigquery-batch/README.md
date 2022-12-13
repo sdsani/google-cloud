@@ -1,4 +1,7 @@
-# BigQuery examples (Interactive option)
+# BigQuery examples (Batch option)
+Why this option? Docs says following
+Run at batch priority, won't count toward concurrent rate limit.
+
 
 ## HelloBigQueryLinks
 | Link          | Description   |  
@@ -6,8 +9,9 @@
 | https://cloud.google.com/bigquery/docs/reference/libraries      | Client Libraries |
 | https://cloud.google.com/java/docs/setup | Java Environment Setup |  
 | https://cloud.google.com/bigquery/docs/quickstarts/quickstart-client-libraries | Google platform setup (Service account etc.) |
-| https://stackoverflow.com/questions/10560768/google-bigquery-401-unauthorized-error-using-service-account | How to address 401 error |    
 | https://cloud.google.com/bigquery/docs/running-queries | Both interactive and batch query |
+| https://stackoverflow.com/questions/10560768/google-bigquery-401-unauthorized-error-using-service-account | How to address 401 error |    
+
 
 ## Commands  
 export GOOGLE_APPLICATION_CREDENTIALS="/home/sdsani/eclipse-workspace/bigquery/donotcommit/bg-service-account.json"
