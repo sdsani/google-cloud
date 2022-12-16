@@ -10,6 +10,7 @@
 | https://cloud.google.com/bigquery/docs/running-queries | Both interactive and batch query |
 | https://cloud.google.com/bigquery/docs/samples/ | Code examples |
 | https://www.bemyaficionado.com/big-query-rest-api/ | Rest API Example |
+| https://developers.google.com/api-client-library/java/google-api-java-client/oauth2 | OAuth |
 
 ## Commands  
 export GOOGLE_APPLICATION_CREDENTIALS="/home/sdsani/eclipse-workspace/bigquery/donotcommit/bg-service-account.json"
