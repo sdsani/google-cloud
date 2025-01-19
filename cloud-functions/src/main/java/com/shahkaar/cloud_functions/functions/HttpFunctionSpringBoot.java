@@ -9,7 +9,7 @@ import java.util.function.Function;
 @Slf4j
 public class HttpFunctionSpringBoot implements Function<Employee, Employee> {
 
-    @Value("spring-boot-environment")
+    @Value("${spring-boot-environment}")
     String sbEnv;
 
     @Override
@@ -36,7 +36,7 @@ public class HttpFunctionSpringBoot implements Function<Employee, Employee> {
     gcloud alpha functions local deploy http-function-sb \
         --entry-point=org.springframework.cloud.function.adapter.gcp.GcfJarLauncher \
         --runtime=java21 --source=. --port=8080 \
-        --set-env-vars="spring_profile_active=local" \
+        --set-env-vars="SPRING_PROFILES_ACTIVE=local" \
         --set-env-vars="GOOGLE_FUNCTION_SIGNATURE_TYPE=http" \
         --set-env-vars="GOOGLE_FUNCTION_TARGET=apply" \
         --set-env-vars="MAIN_CLASS=com.shahkaar.cloud_functions.functions.HttpFunctionSpringBoot"
@@ -47,7 +47,7 @@ public class HttpFunctionSpringBoot implements Function<Employee, Employee> {
         --project cloud-functions-448122 --region us-central1 --source=. --runtime=java21 \
         --entry-point=org.springframework.cloud.function.adapter.gcp.GcfJarLauncher \
         --trigger-http --allow-unauthenticated \
-        --set-env-vars="spring_profile_active=local" \
+        --set-env-vars="SPRING_PROFILES_ACTIVE=gcp" \
         --set-env-vars="GOOGLE_FUNCTION_TARGET=apply" \
         --set-env-vars="MAIN_CLASS=com.shahkaar.cloud_functions.functions.HttpFunctionSpringBoot"
 
