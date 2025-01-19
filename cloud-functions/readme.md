@@ -2,11 +2,15 @@
 Work in progress  
 
 ### Links
-| Description             | Link                                                                           |
-|-------------------------|--------------------------------------------------------------------------------|
-| Spring Boot GCP Adapter | https://docs.spring.io/spring-cloud-function/reference/adapters/gcp-intro.html |
-| Function Emulator       | https://cloud.google.com/functions/docs/running/functions-emulator             |
-| Function Deploy         | https://cloud.google.com/sdk/gcloud/reference/functions/deploy                 |
+| Group        | Description           | Link                                                                                          |
+|--------------|-----------------------|-----------------------------------------------------------------------------------------------|
+| Spring Boot  |                       |                                                                                               |
+|              | Spring Cloud Function | https://spring.io/projects/spring-cloud-function                                              |
+|              | GitHub Sample Repo    | https://github.com/spring-cloud/spring-cloud-function/tree/main/spring-cloud-function-samples |
+|              | GCP Adapter           | https://docs.spring.io/spring-cloud-function/reference/adapters/gcp-intro.html                |
+| Google Cloud |                       |                                                                                               |
+|              | Function Emulator     | https://cloud.google.com/functions/docs/running/functions-emulator                            |
+|              | Function Deploy       | https://cloud.google.com/sdk/gcloud/reference/functions/deploy                                |
 
 
 
