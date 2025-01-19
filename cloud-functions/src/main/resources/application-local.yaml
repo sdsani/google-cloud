@@ -1,0 +1,6 @@
+spring-boot-environment: Emulator
+
+spring:
+  application:
+    name: cloud-functions
+

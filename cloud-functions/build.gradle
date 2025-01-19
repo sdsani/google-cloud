@@ -2,7 +2,7 @@ plugins {
 	id 'java'
 	id 'org.springframework.boot' version '3.3.7'
 	id 'io.spring.dependency-management' version '1.1.7'
-	id 'org.springframework.boot' version '3.3.1'
+	id 'io.freefair.lombok' version "8.11"
 }
 
 group = 'com.shahkaar'
@@ -15,9 +15,10 @@ java {
 }
 
 configurations {
-	compileOnly {
-		extendsFrom annotationProcessor
-	}
+	//invoker
+//	compileOnly {
+//		extendsFrom annotationProcessor
+//	}
 }
 
 repositories {
@@ -31,9 +32,13 @@ ext {
 }
 
 dependencies {
+	implementation 'org.springframework.boot:spring-boot-starter'
 	implementation 'com.google.cloud:spring-cloud-gcp-starter'
-	compileOnly 'org.projectlombok:lombok'
-	annotationProcessor 'org.projectlombok:lombok'
+	implementation 'org.springframework.cloud:spring-cloud-function-adapter-gcp'
+
+	compileOnly "org.projectlombok:lombok:${lombokVersion}"
+	annotationProcessor "org.projectlombok:lombok:${lombokVersion}"
+
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
 }
