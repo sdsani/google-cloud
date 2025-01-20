@@ -1,5 +1,6 @@
 package com.shahkaar.cloud_functions.functions;
 
+import static com.shahkaar.cloud_functions.data.Constants.*;
 import com.shahkaar.cloud_functions.data.Employee;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -7,14 +8,14 @@ import org.springframework.beans.factory.annotation.Value;
 import java.util.function.Function;
 
 @Slf4j
-public class HttpFunctionSpringBoot implements Function<Employee, Employee> {
+public class SpringBootHttpFunction implements Function<Employee, Employee> {
 
     @Value("${spring-boot-environment}")
     String sbEnv;
 
     @Override
     public Employee apply(Employee employee) {
-        log.info("===========================================================================================");
+        log.info(LINE);
         log.info("Data received: {}", employee.toString());
         log.info("Spring boot Variable: {}", sbEnv);
         employee.setId(reverse(employee.getId()));
@@ -22,7 +23,7 @@ public class HttpFunctionSpringBoot implements Function<Employee, Employee> {
         employee.setLName(reverse(employee.getLName()));
         employee.setRole(reverse(employee.getRole()));
         log.info(employee.toString());
-        log.info("===========================================================================================");
+        log.info(LINE);
         return employee;
     }
 
@@ -39,7 +40,7 @@ public class HttpFunctionSpringBoot implements Function<Employee, Employee> {
         --set-env-vars="SPRING_PROFILES_ACTIVE=local" \
         --set-env-vars="GOOGLE_FUNCTION_SIGNATURE_TYPE=http" \
         --set-env-vars="GOOGLE_FUNCTION_TARGET=apply" \
-        --set-env-vars="MAIN_CLASS=com.shahkaar.cloud_functions.functions.HttpFunctionSpringBoot"
+        --set-env-vars="MAIN_CLASS=com.shahkaar.cloud_functions.functions.SpringBootHttpFunction"
         --project cloud-functions
 
   Deploy to Google Run Functions:
@@ -49,7 +50,7 @@ public class HttpFunctionSpringBoot implements Function<Employee, Employee> {
         --trigger-http --allow-unauthenticated \
         --set-env-vars="SPRING_PROFILES_ACTIVE=gcp" \
         --set-env-vars="GOOGLE_FUNCTION_TARGET=apply" \
-        --set-env-vars="MAIN_CLASS=com.shahkaar.cloud_functions.functions.HttpFunctionSpringBoot"
+        --set-env-vars="MAIN_CLASS=com.shahkaar.cloud_functions.functions.SpringBootHttpFunction"
 
   Test Function:
     curl --header "Content-Type: application/json" \
