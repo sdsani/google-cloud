@@ -35,6 +35,8 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter'
 	implementation 'com.google.cloud:spring-cloud-gcp-starter'
 	implementation 'org.springframework.cloud:spring-cloud-function-adapter-gcp'
+	// https://mvnrepository.com/artifact/com.google.cloud/google-cloudevent-types
+	implementation 'com.google.cloud:google-cloudevent-types:0.16.0'
 
 	compileOnly "org.projectlombok:lombok:${lombokVersion}"
 	annotationProcessor "org.projectlombok:lombok:${lombokVersion}"
