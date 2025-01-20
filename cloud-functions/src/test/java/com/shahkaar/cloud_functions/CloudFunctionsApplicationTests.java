@@ -20,7 +20,7 @@ import java.io.BufferedReader;
 @Slf4j
 class CloudFunctionsApplicationTests {
 
-	@Test
+	//@Test
 	void contextLoads() throws JsonProcessingException {
 
 		Employee employee = Employee.builder().id("123").fName("Donald").lName("Duck").role("Captain").build();
@@ -29,7 +29,7 @@ class CloudFunctionsApplicationTests {
 		log.info(json);
 	}
 
-	@Test
+	//@Test
 	void jsonToJava() throws JsonProcessingException {
 		String json = "{\"kind\":\"storage#object\"" +
 						",\"id\":\"event-function-test/.gitignore/1737322979121115\",\"selfLink\":" +

@@ -22,12 +22,8 @@ import java.util.function.Consumer;
 //          --role='roles/pubsub.publisher'
 
 @Slf4j
-//public class SpringBootBackgroundFunction implements Consumer<StorageObjectData> {
-//public class SpringBootBackgroundFunction implements Consumer<String> {
 public class SpringBootBackgroundFunction implements Consumer<String> {
     @Override
-    //public void accept(StorageObjectData storageObjectData) {
-    //public void accept(String storageObjectData) {
     public void accept(String data) {
         log.info(LINE);
         StorageObjectData storageObjectData = transform(data);
@@ -44,7 +40,6 @@ public class SpringBootBackgroundFunction implements Consumer<String> {
         }
         return builder.build();
     }
-
 }
 
 /*
