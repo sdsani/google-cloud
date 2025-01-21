@@ -31,8 +31,6 @@ public class CloudFunctionsApplication {
 	@Autowired
 	PubSubTemplate pubSubTemplate;
 
-	private final static String TOPIC_NAME = "projects/cloud-functions-448122/topics/cloud-function-topic";
-
 	public static void main(String[] args) {
 		SpringApplication.run(CloudFunctionsApplication.class, args);
 	}
@@ -55,8 +53,8 @@ public class CloudFunctionsApplication {
 	}
 
 	private void pushMessage(StorageObjectData storageObjectData) {
-		log.info("pushing: {} to topic: {} ", storageObjectData, TOPIC_NAME);
-		CompletableFuture<String> future = pubSubTemplate.publish(TOPIC_NAME, storageObjectData.toString());
+		log.info("pushing: {} to topic: {} ", storageObjectData, Constants.TOPIC_NAME);
+		CompletableFuture<String> future = pubSubTemplate.publish(Constants.TOPIC_NAME, storageObjectData.toString());
         try {
             String response = future.get();
 			log.info("Result of Push (PubSub) : {}", response);
