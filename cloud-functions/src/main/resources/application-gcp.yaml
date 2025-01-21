@@ -1,1 +1,6 @@
 spring-boot-environment: GCP
+
+spring:
+  cloud:
+    function:
+      definition: springBootHttpFunction,springBootBackgroundFunction,storageMessageConsumer
