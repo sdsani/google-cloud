@@ -42,6 +42,9 @@ dependencies {
 	// https://mvnrepository.com/artifact/com.google.cloud/google-cloudevent-types
 	implementation 'com.google.cloud:google-cloudevent-types:0.16.0'
 
+	// Following is just for test to see if I can get a pubsub template created
+	implementation 'com.google.cloud:spring-cloud-gcp-starter-pubsub'
+
 	compileOnly "org.projectlombok:lombok:${lombokVersion}"
 	annotationProcessor "org.projectlombok:lombok:${lombokVersion}"
 
