@@ -21,6 +21,21 @@ import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 import java.util.function.Function;
 
+/*
+	In this example all options listed below work.
+		1. @Value annotation
+		2. PubSubTemplate injection works
+		3. PubSub message push works also.
+
+	This means that we have spring boot dependency injection working in this case.
+
+	So far, only time when I get working is when we have single main class. If we have more than one main classes
+	either at the root or under the functions package, I get following error.
+	Unable to find a single main class from the following candidates
+		[com.shahkaar.cloud_functions.functions.SpringBootHttpFunctionWithMain, com.shahkaar.cloud_functions.functions.SpringBootBackgroundFunctionWithMain
+	This will make code structure complicated and result lot of repos?
+ */
+
 @SpringBootApplication
 @Slf4j
 public class CloudFunctionsApplication {
@@ -30,8 +45,6 @@ public class CloudFunctionsApplication {
 
 	@Autowired
 	PubSubTemplate pubSubTemplate;
-
-	private final static String TOPIC_NAME = "projects/cloud-functions-448122/topics/cloud-function-topic";
 
 	public static void main(String[] args) {
 		SpringApplication.run(CloudFunctionsApplication.class, args);
@@ -49,14 +62,14 @@ public class CloudFunctionsApplication {
 			log.info("StorageObjectData: {}", storageObjectData );
 			log.info("MessageHeaders: {}", mh );
 			log.info(Constants.LINE);
-			//pushMessage(storageObjectData);
+			pushMessage(storageObjectData);
 			return "Success";
 		};
 	}
 
 	private void pushMessage(StorageObjectData storageObjectData) {
-		log.info("pushing: {} to topic: {} ", storageObjectData, TOPIC_NAME);
-		CompletableFuture<String> future = pubSubTemplate.publish(TOPIC_NAME, storageObjectData.toString());
+		log.info("pushing: {} to topic: {} ", storageObjectData, Constants.TOPIC_NAME);
+		CompletableFuture<String> future = pubSubTemplate.publish(Constants.TOPIC_NAME, storageObjectData.toString());
         try {
             String response = future.get();
 			log.info("Result of Push (PubSub) : {}", response);
