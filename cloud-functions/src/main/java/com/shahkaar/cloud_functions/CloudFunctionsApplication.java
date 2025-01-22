@@ -28,6 +28,12 @@ import java.util.function.Function;
 		3. PubSub message push works also.
 
 	This means that we have spring boot dependency injection working in this case.
+
+	So far, only time when I get working is when we have single main class. If we have more than one main classes
+	either at the root or under the functions package, I get following error.
+	Unable to find a single main class from the following candidates
+		[com.shahkaar.cloud_functions.functions.SpringBootHttpFunctionWithMain, com.shahkaar.cloud_functions.functions.SpringBootBackgroundFunctionWithMain
+	This will make code structure complicated and result lot of repos?
  */
 
 @SpringBootApplication
