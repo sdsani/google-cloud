@@ -21,6 +21,15 @@ import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 import java.util.function.Function;
 
+/*
+	In this example all options listed below work.
+		1. @Value annotation
+		2. PubSubTemplate injection works
+		3. PubSub message push works also.
+
+	This means that we have spring boot dependency injection working in this case.
+ */
+
 @SpringBootApplication
 @Slf4j
 public class CloudFunctionsApplication {
@@ -47,7 +56,7 @@ public class CloudFunctionsApplication {
 			log.info("StorageObjectData: {}", storageObjectData );
 			log.info("MessageHeaders: {}", mh );
 			log.info(Constants.LINE);
-			//pushMessage(storageObjectData);
+			pushMessage(storageObjectData);
 			return "Success";
 		};
 	}
