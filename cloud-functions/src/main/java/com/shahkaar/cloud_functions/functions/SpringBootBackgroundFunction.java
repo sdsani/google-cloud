@@ -1,44 +1,67 @@
 package com.shahkaar.cloud_functions.functions;
 
-import static com.shahkaar.cloud_functions.data.Constants.*;
-
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.cloud.spring.pubsub.core.PubSubTemplate;
 import com.google.events.cloud.storage.v1.StorageObjectData;
-import com.google.protobuf.InvalidProtocolBufferException;
-import com.google.protobuf.util.JsonFormat;
+import com.shahkaar.cloud_functions.converter.StorageObjectDataMessageConverter;
+import com.shahkaar.cloud_functions.data.Constants;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.cloud.function.json.JacksonMapper;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Profile;
+import org.springframework.messaging.Message;
+import org.springframework.messaging.MessageHeaders;
+import org.springframework.messaging.converter.MessageConverter;
 
-import java.util.function.Consumer;
-
-// https://medium.com/@claudiorauso/storage-triggered-google-cloud-functions-in-java-ebadaf6e2943
-// 1. You must enable eventarc.googleapis.com api to use this option.
-// 2. To use GCS CloudEvent triggers, the GCS service account requires the Pub/Sub Publisher (roles/pubsub.publisher)
-//      IAM role in the specified project. (See https://cloud.google.com/eventarc/docs/run/quickstart-storage#before-you-begin):
-//      permission denied" },
-//     To solve this issue. use commands below
-//     gcloud storage service-agent --project=cloud-functions-448122 => service-177997074765@gs-project-accounts.iam.gserviceaccount.com
-//
-//     gcloud projects add-iam-policy-binding cloud-functions-448122 \
-//          --member="serviceAccount:service-177997074765@gs-project-accounts.iam.gserviceaccount.com" \
-//          --role='roles/pubsub.publisher'
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ExecutionException;
+import java.util.function.Function;
 
 @Slf4j
-public class SpringBootBackgroundFunction implements Consumer<String> {
-    @Override
-    public void accept(String data) {
-        log.info(LINE);
-        StorageObjectData storageObjectData = transform(data);
-        log.info("startObjectData: {} ", storageObjectData);
-        log.info(LINE);
+@SpringBootApplication
+public class SpringBootBackgroundFunction {
+
+    @Value("${spring-boot-environment}")
+    String sbEnv;
+
+    @Autowired
+    PubSubTemplate pubSubTemplate;
+
+    @Bean
+    public Function<Message<StorageObjectData>, String> sbBackgroundFunction() {
+        return message -> {
+            StorageObjectData storageObjectData = message.getPayload();
+            MessageHeaders mh = message.getHeaders();
+            log.info(Constants.LINE);
+            log.info("spring-boot-environment: {} ", sbEnv);
+            log.info(
+                    "Event on bucket={} name={}", storageObjectData.getBucket(), storageObjectData.getName());
+            log.info("StorageObjectData: {}", storageObjectData );
+            log.info("MessageHeaders: {}", mh );
+            log.info(Constants.LINE);
+            pushMessage(storageObjectData);
+            return "Success";
+        };
     }
 
-    private StorageObjectData transform(String data) {
-        StorageObjectData.Builder builder = StorageObjectData.newBuilder();
+    private void pushMessage(StorageObjectData storageObjectData) {
+        log.info("pushing: {} to topic: {} ", storageObjectData, Constants.TOPIC_NAME);
+        CompletableFuture<String> future = pubSubTemplate.publish(Constants.TOPIC_NAME, storageObjectData.toString());
         try {
-            JsonFormat.parser().merge(data, builder);
-        } catch (InvalidProtocolBufferException e) {
+            String response = future.get();
+            log.info("Result of Push (PubSub) : {}", response);
+        } catch (InterruptedException | ExecutionException e) {
             throw new RuntimeException(e);
         }
-        return builder.build();
+    }
+
+    @Bean
+    @Profile("sb-bg-function")
+    public MessageConverter messageConverter() {
+        return new StorageObjectDataMessageConverter(new JacksonMapper(new ObjectMapper()));
     }
 }
 
@@ -48,16 +71,16 @@ public class SpringBootBackgroundFunction implements Consumer<String> {
         --project cloud-functions-448122 --region us-central1 --source=. --runtime=java21 \
         --entry-point=org.springframework.cloud.function.adapter.gcp.GcfJarLauncher \
         --allow-unauthenticated \
-        --set-env-vars="SPRING_PROFILES_ACTIVE=gcp" \
+        --set-env-vars="SPRING_PROFILES_ACTIVE=sb-bg-function" \
         --set-env-vars="GOOGLE_FUNCTION_TARGET=accept" \
         --set-env-vars="MAIN_CLASS=com.shahkaar.cloud_functions.functions.SpringBootBackgroundFunction" \
         --trigger-event-filters="type=google.cloud.storage.object.v1.finalized" \
-        --trigger-event-filters="bucket=event-function-test"
+        --trigger-event-filters="bucket=event-function-test" \
+        --memory=512MB
 
   Test Function:
     Drop a file in the bucket event-function-test
 
   Delete function
     gcloud functions delete storage-bg-function-sb --region us-central1 --project cloud-functions-448122
-    gcloud functions list --project cloud-functions-448122
  */
