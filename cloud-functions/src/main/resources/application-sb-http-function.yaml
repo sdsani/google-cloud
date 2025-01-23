@@ -1,0 +1,7 @@
+spring-boot-environment: GCP
+
+spring:
+  cloud:
+    function:
+      ineligible-definitions: sbBackgroundFunction
+      definition: sbHttpFunction
