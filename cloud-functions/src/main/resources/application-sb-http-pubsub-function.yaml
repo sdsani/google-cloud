@@ -1,0 +1,7 @@
+spring-boot-environment: sb-http-pubsub-function
+
+spring:
+  cloud:
+    function:
+      ineligible-definitions: sbHttpFunction
+      definition: sbPubSubBGFunction
