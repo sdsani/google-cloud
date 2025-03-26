@@ -1,0 +1,18 @@
+#docker compose -f cast-highlight/casthighlight-compose.yaml up
+name: Cast Highlight
+services:
+  cli:
+    user: $UID
+    volumes:
+      - "../:/sourceDir"
+      - "../cast-highlight/temp:/workingDir"
+    image: casthighlight/cli:5.9.6
+    command:    
+      - --sourceDir
+      - /sourceDir
+      - --workingDir
+      - /workingDir
+      - --ignoreDirectories
+      - cast-highlight
+      - --skipUpload
+#      - --help

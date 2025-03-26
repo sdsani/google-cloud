@@ -1,0 +1,20 @@
+Cast highlight is installed in user/lib (not necessary since docker option is available)
+
+Cli: https://doc.casthighlight.com/product-tutorials-third-party-tools/automated-code-scan-command-line/
+Docker option: https://doc.casthighlight.com/product-tutorials-third-party-tools/cast-highlights-docker-image-code-scans/
+
+
+Sample command for Docker option:
+=================================
+docker run --user $UID -v $(pwd):/sourceDir \
+	-v /tmp:/workingDir casthighlight/cli  \
+	--sourceDir  /sourceDir \
+	--workingDir /workingDir --applicationId 33074 \
+	--companyId 6515 --login bob@noreply.com --password ****
+
+Above will do following
+	Scan current directory, 
+	write logs to /tmp 
+	and upload the result to the right application on the portal. 
+	The difference is how you specify the --sourceDir and --workingDir options. 
+	With docker you have to map both the sourceDir and workingDir paths on the host to their respective locations in the container.
