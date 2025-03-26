@@ -1,18 +1,46 @@
+#docker run \
+#  -v $(pwd):/sourceDir \
+#  -v $(pwd)/cast-highlight/temp:/workingDir \
+#  casthighlight/cli \
+#  --sourceDir /sourceDir \
+#  --workingDir /workingDir \
+#  --applicationId 119813 \
+#  --companyId 3249 \
+#  --login sxsani@primetherapeutics.com \
+#  --password XXXXX
+
 #docker compose -f cast-highlight/casthighlight-compose.yaml up
 name: Cast Highlight
 services:
-  cli:
-    user: $UID
+  cli: 
+    #user: $UID
+    #user: sxsani@primetherapeutics.com
     volumes:
       - "../:/sourceDir"
       - "../cast-highlight/temp:/workingDir"
     image: casthighlight/cli:5.9.6
+    environment:
+      LOG_LEVEL: "debug" # Or "info", "warn", "error", etc.
     command:    
+      #      - --help
+      #      - --skipUpload
       - --sourceDir
       - /sourceDir
       - --workingDir
       - /workingDir
       - --ignoreDirectories
       - cast-highlight
-      - --skipUpload
-#      - --help
+      - --ignoreFiles
+      - .gitignore,temp.txt
+      - --serverUrl 
+      - https://app.casthighlight.com/
+      - --applicationId
+      - "119813"
+      - --companyId
+      - "3251"
+      - --basicAuth
+      - XXXXXXX
+      # - --login
+      # - sxsani@primetherapeutics.com
+      # - --password
+      # - XXXXXXX

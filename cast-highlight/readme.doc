@@ -3,7 +3,16 @@ Cast highlight is installed in user/lib (not necessary since docker option is av
 Cli: https://doc.casthighlight.com/product-tutorials-third-party-tools/automated-code-scan-command-line/
 Docker option: https://doc.casthighlight.com/product-tutorials-third-party-tools/cast-highlights-docker-image-code-scans/
 
-
+docker run --user $UID \
+	-v $(pwd)/../:/sourceDir \
+	-v $(pwd)/../cast-highlight/temp:/workingDir \
+	casthighlight/cli  \
+	--sourceDir  /sourceDir \
+	--workingDir /workingDir \
+	--applicationId 119631 \
+	--companyId 3249 \
+	--login sxsani@primetherapeutics.com \
+	--password ****
 Sample command for Docker option:
 =================================
 docker run --user $UID -v $(pwd):/sourceDir \
